@@ -1,42 +1,53 @@
-#include "Array.hpp"
+#include <iostream>
+#include <Array.hpp>
 
-int main()
+#define MAX_VAL 750
+int main(int, char**)
 {
-	Array<int>	some(5);
+    Array<int> numbers(MAX_VAL);
+    int* mirror = new int[MAX_VAL];
+    srand(time(NULL));
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        const int value = rand();
+        numbers[i] = value;
+        mirror[i] = value;
+    }
+    //SCOPE
+    {
+        Array<int> tmp = numbers;
+        Array<int> test(tmp);
+    }
 
-	for (int i = 0; i < some.size(); ++i)
-		some[i] = i * i;
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        if (mirror[i] != numbers[i])
+        {
+            std::cerr << "didn't save the same value!!" << std::endl;
+            return 1;
+        }
+    }
+    try
+    {
+        numbers[-2] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
+        numbers[MAX_VAL] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 
-	Array<int>	copy(some);
-	Array<int>	def;
-
-	std::cout << "Some array: " << std::endl;
-	for (int i = 0; i < some.size(); ++i)
-	{
-		std::cout << some[i] << '\n';
-	}
-	std::cout << std::endl;
-
-	std::cout << "Copy array: " << std::endl;
-
-	for (int i = 0; i < copy.size(); ++i)
-	{
-		std::cout << some[i] << " -> " << copy[i] << '\n';
-	}
-	std::cout << "Array address some: " << some.getArray() << std::endl;
-	std::cout << "Array address copy: " << copy.getArray() << std::endl;
-	
-
-	std::cout << "def: " << std::endl;
-	try
-	{
-		def[1];
-	}
-	catch(const std::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	std::cout << std::endl;
-
-	return (0);
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        numbers[i] = rand();
+    }
+    delete [] mirror;//
+    return 0;
 }

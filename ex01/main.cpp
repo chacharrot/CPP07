@@ -12,11 +12,3 @@ int main()
 
 	return 0;
 }
-
-class Awesome{
-public:
-	Awesome( void ) : _n( 42 ) { return; }
-	int get( void ) const { return this->_n; }
-private:
-	int _n;
-};
